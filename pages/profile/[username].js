@@ -1,9 +1,23 @@
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { getFirestore, doc, getDoc } from 'firebase/firestore'
 
-import { getProfileData } from '../../fetchData/getProfileData'
+export default function Profile() {
+  const [profile, setProfile] = useState({})
+  const router = useRouter()
+  const { username } = router.query
 
-export default function SSRPage({ data }) {
-  const { username, profile } = data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const db = getFirestore()
+      const result = await getDoc(doc(db, 'profile', username))
+      if (result.exists())
+        setProfile(result.data())
+    }
+    if (username)
+      fetchProfile()
+  }, [username])
 
   return (
     <div className="container">
@@ -14,18 +28,9 @@ export default function SSRPage({ data }) {
 
       <main>
         <h1 className="title">Next.js w/ Firebase Server-Side</h1>
-        <h2>{username}</h2>
-        <p>{profile.message}</p>
+        <h2>{profile.username}</h2>
+        <h2>{profile.message}</h2>
       </main>
     </div>
   )
-}
-
-export const getServerSideProps = async ({ params }) => {
-  const { username } = params
-  const profile = await getProfileData(username)
-  if (!profile) {
-    return { notFound: true }
-  }
-  return { props: { data: { username, profile } } }
 }
