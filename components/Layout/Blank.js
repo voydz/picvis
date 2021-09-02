@@ -1,6 +1,6 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Theming } from '../Theme'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,15 +13,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Blank({ children }) {
+export function Blank({ children, dark }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <main className={classes.content}>
-        {children}
-      </main>
-    </div>
+    <Theming dark={dark}>
+      <div className={classes.root}>
+        <main className={classes.content}>
+          {children}
+        </main>
+      </div>
+    </Theming>
   );
 }

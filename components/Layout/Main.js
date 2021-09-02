@@ -1,10 +1,10 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import React from 'react'
+import clsx from 'clsx'
+import { makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import { Theming } from '../Theme'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,23 +21,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Main({ title, children }) {
+export function Main({ children, title, dark }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute">
-        <Toolbar>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            {title}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        {children}
-      </main>
-    </div>
+    <Theming dark={dark}>
+      <div className={classes.root}>
+        <AppBar position="absolute">
+          <Toolbar>
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+              {title}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          {children}
+        </main>
+      </div>
+    </Theming>
   );
 }
