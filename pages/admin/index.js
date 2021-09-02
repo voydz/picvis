@@ -1,45 +1,44 @@
-import { useEffect } from 'react'
-import Link from 'next/link'
+import React, { useEffect } from 'react'
+import {useRouter} from 'next/router'
+import { getAuth, signOut } from 'firebase/auth'
 import { getFirestore, doc, setDoc } from 'firebase/firestore'
 import { useUser } from '../../context/userContext'
 import { Main } from '../../components/Layout'
+import Button from '@material-ui/core/Button'
 
-export default function Home() {
-  // Our custom hook to get context values
+export default function Admin() {
   const { loadingUser, user } = useUser()
-
-  const profile = { username: 'nextjs_user', message: 'Awesome!!' }
+  const router = useRouter()
 
   useEffect(() => {
-    if (!loadingUser) {
-      // You know that the user is loaded: either logged in or out!
-      console.log(user)
+    if (!(user || loadingUser)) {
+      // Will redirect any unauthenticated requests.
+      router.push('/admin/login')
     }
-  }, [loadingUser, user])
+  }, [router, loadingUser, user])
 
-  const createUser = async () => {
-    const db = getFirestore()
-    await setDoc(doc(db, 'profile', profile.username), profile)
-    alert('User created!!')
+  async function handleLogout() {
+    const auth = getAuth()
+    try {
+      // further handling will be done by auth observer
+      await signOut(auth)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
-    <Main>
-      <h1 className="title">Next.js w/ Firebase Client-Side</h1>
-      <p className="description">Fill in your credentials to get started</p>
+    <Main dark title="Verwaltung">
+      Hello {user?.email}
 
-      <p className="description">
-        Cloud Firestore Security Rules write permissions are required for
-        adding users
-      </p>
-      <button onClick={createUser}>Create nextjs_user</button>
-
-      <p className="description">
-        Please press the link below after adding the user
-      </p>
-      <Link href={`/profile/${profile.username}`} passHref>
-        <a>Go to SSR Page</a>
-      </Link>
+      <Button
+        type="button"
+        variant="contained"
+        color="primary"
+        onClick={handleLogout}
+      >
+        Abmelden
+      </Button>
     </Main>
   )
 }
