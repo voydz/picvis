@@ -1,59 +1,42 @@
-import React, { useState, useEffect } from 'react'
-import {useRouter} from 'next/router'
-import firebase from '../../lib/firebaseApp'
-import { useUser } from '../../context/userContext'
-import { Main } from '../../components/Layout'
+import React, { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { Main } from '../../components/Layout'
+import { useUser } from '../../context/userContext'
+import { useImages } from './useImages'
 
-function useImages() {
-  const [images, setImages] = useState([])
-  const [loading, setLoading] = useState(true) // Helpful, to update the UI accordingly.
-
-  useEffect(() => {
-    const db = firebase.firestore()
-    const q = db.collection('images').where('approved', '==', -1)
-    const unsubscriber = q.onSnapshot((querySnapshot) => {
-      try {
-        const items = []
-
-        // Update images in realtime.
-        querySnapshot.forEach((doc) => {
-          items.push(doc.data())
-        })
-
-        setImages(items)
-      } catch (error) {
-        // Most probably a connection error. Handle appropriately.
-      } finally {
-        setLoading(false)
-      }
-    })
-
-    // Unsubscribe listener on unmount
-    return () => unsubscriber()
-  }, [])
-
-  return {loading, images};
-}
+const useStyles = makeStyles((theme) => ({
+  cardGrid: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+}))
 
 export default function Admin() {
-  const { loadingUser, user } = useUser()
+  const classes = useStyles()
   const router = useRouter()
-  const images = useImages()
-
-  async function handleNew() {
-    try {
-      console.log('Trigg')
-      const db = firebase.firestore()
-      const doc = await db.collection('images').add({
-        name: 'test',
-        approved: -1,
-      })
-      console.log('Document written', doc.id)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const { loadingUser, user } = useUser()
+  const { loadingImages, images } = useImages()
 
   useEffect(() => {
     if (!(user || loadingUser)) {
@@ -64,9 +47,36 @@ export default function Admin() {
 
   return (
     <Main dark title="Verwaltung">
-      Hello {user?.email}
-      <Button variant="outlined" onClick={handleNew}>Test create</Button>
-      {JSON.stringify(images)}
+      <Container className={classes.cardGrid} maxWidth="xl">
+        {loadingImages ? (
+          <CircularProgress />
+        ) : (
+          <Grid container spacing={4}>
+            {images.map((card, i) => (
+              <Grid item key={i} xs={12} sm={6} md={4} lg={3} xl={2}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image title"
+                  />
+                  <CardContent className={classes.cardContent}>
+                    This is a media card. You can use this section to describe the content.
+                  </CardContent>
+                  <CardActions>
+                    <Button>
+                      Annehmen
+                    </Button>
+                    <Button>
+                      Löschen
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Container>
     </Main>
   )
 }

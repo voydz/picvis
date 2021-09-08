@@ -13,8 +13,8 @@ export default function UserContextComp({ children }) {
       try {
         if (user) {
           // User is signed in.
-          const { uid, displayName, email } = user
-          setUser({ uid, displayName, email })
+          const { uid, email } = user
+          setUser({ uid, email })
         } else setUser(null)
       } catch (error) {
         // Most probably a connection error. Handle appropriately.
