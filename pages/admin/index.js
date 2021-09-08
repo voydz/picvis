@@ -14,7 +14,7 @@ import firebase from '../../lib/firebaseApp'
 import { formatDate } from '../../lib/utils'
 import { Main } from '../../components/Layout'
 import { useUser } from '../../context/userContext'
-import { useImages } from './useImages'
+import { useImages } from '../../data/useImages'
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -35,8 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
-async function setDocument(hash, data) {
+async function updateDocument(hash, data) {
   const db = firebase.firestore()
 
   try {
@@ -53,11 +52,11 @@ export default function Admin() {
   const { loadingImages, images } = useImages()
 
   async function handleAccept({ hash }) {
-    await setDocument(hash, { approved: 1 })
+    await updateDocument(hash, { approved: 1 })
   }
 
   async function handleDeny({ hash }) {
-    await setDocument(hash, { approved: 0 })
+    await updateDocument(hash, { approved: 0 })
   }
 
   useEffect(() => {

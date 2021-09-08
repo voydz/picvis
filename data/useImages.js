@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import firebase from '../../lib/firebaseApp'
+import firebase from '../lib/firebaseApp'
 
 export const IMAGES_APPROVED = 1
 export const IMAGES_DECLINED = 0
