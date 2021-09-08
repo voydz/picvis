@@ -7,8 +7,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@canvas/image": "^1.0.1",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "blockhash-core": "^0.1.0",
     "firebase": "^8.10",
     "gsap": "^3.7.1",
     "next": "latest",
