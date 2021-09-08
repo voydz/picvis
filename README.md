@@ -1,6 +1,6 @@
 # picture-visualizer
 
-This is a simple set up for Firebase for client side applications. The firebase app is initialized in `firebase/createApp.js`. The React Context API is used to provide user state.
+This is a simple set up for Firebase for client side applications. The firebase app is initialized in `lib/firebaseApp.js`. The React Context API is used to provide user state.
 
 ## Deploy on Vercel
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import firebase from '../lib/firebaseApp'
 
 export const UserContext = createContext()
 
@@ -9,13 +9,12 @@ export default function UserContextComp({ children }) {
 
   useEffect(() => {
     // Listen authenticated user
-    const auth = getAuth();
-    const unsubscriber = onAuthStateChanged(auth, async (user) => {
+    const unsubscriber = firebase.auth().onAuthStateChanged(async (user) => {
       try {
         if (user) {
           // User is signed in.
-          const { uid, displayName, email, photoURL } = user
-          setUser({ uid, displayName, email, photoURL })
+          const { uid, displayName, email } = user
+          setUser({ uid, displayName, email })
         } else setUser(null)
       } catch (error) {
         // Most probably a connection error. Handle appropriately.

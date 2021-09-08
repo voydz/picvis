@@ -1,9 +1,10 @@
 import React from 'react'
-import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import firebase from '../../lib/firebaseApp'
 import { Theming } from '../Theme'
 
 const useStyles = makeStyles((theme) => ({
@@ -24,6 +25,15 @@ const useStyles = makeStyles((theme) => ({
 export function Main({ children, title, dark }) {
   const classes = useStyles();
 
+  async function handleLogout() {
+    try {
+      // further handling will be done by auth observer
+      await firebase.auth().signOut()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Theming dark={dark}>
       <div className={classes.root}>
@@ -32,6 +42,7 @@ export function Main({ children, title, dark }) {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               {title}
             </Typography>
+            <Button color="inherit" onClick={handleLogout}>Abmelden</Button>
           </Toolbar>
         </AppBar>
         <main className={classes.content}>

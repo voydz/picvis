@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import Head from 'next/head'
 import UserProvider from '../context/userContext'
-import '../lib/firebaseApp'
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {

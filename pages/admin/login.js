@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useUser } from '../../context/userContext'
 import { Blank } from '../../components/Layout'
 import Avatar from '@material-ui/core/Avatar'
@@ -11,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import firebase from '../../lib/firebaseApp'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,10 +50,9 @@ export default function Login() {
   }, [router, loadingUser, user])
 
   async function handleLogin() {
-    const auth = getAuth()
     try {
       // further handling will be done by auth observer
-      await signInWithEmailAndPassword(auth, email, password)
+      await firebase.auth().signInWithEmailAndPassword(email, password)
     } catch (error) {
       console.log(error)
     }
