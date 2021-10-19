@@ -90,6 +90,7 @@ export function Item({ image }) {
           avatar={
             <Badge
               badgeContent={image.views}
+              max={10000}
               color="primary"
               showZero
             >
