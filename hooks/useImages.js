@@ -21,6 +21,27 @@ export async function viewImage(hash) {
   });
 }
 
+export async function fetchImages(query = q => q) {
+  const db = firebase.firestore()
+  const docRef = db.collection('images')
+    .where('approved', '==', IMAGES_APPROVED)
+    .orderBy('views', 'asc')
+    .limit(10)
+
+  try {
+    const items = []
+
+    const querySnapshot = await docRef.get()
+    querySnapshot.forEach((doc) => {
+      items.push(doc.data())
+    })
+
+    return items
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function useImages(approved) {
   const [images, setImages] = useState([])
   const [loadingImages, setLoadingImages] = useState(true) // Helpful, to update the UI accordingly.
@@ -29,7 +50,6 @@ export function useImages(approved) {
     const db = firebase.firestore()
     const q = db.collection('images')
       .where('approved', '==', approved)
-      .orderBy('views', 'asc')
 
     const unsubscriber = q.onSnapshot((querySnapshot) => {
       try {
