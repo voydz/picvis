@@ -32,8 +32,8 @@ export default function Stage() {
       >
         {images.map(image => (
           <SwiperSlide key={image.hash}>
-            {({isActive}) => (
-              <Item image={image} shown={isActive} />
+            {({isActive, isDuplicate}) => (
+              <Item image={image} shown={isActive && !isDuplicate} />
             )}
           </SwiperSlide>
         ))}
