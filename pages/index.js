@@ -3,12 +3,16 @@ import { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Blank } from '../components/Layout'
 import { Item } from '../components/Stage/Item'
+import { useGuard } from '../hooks/useGuard'
 import { fetchImages } from '../hooks/useImages'
 
 import 'swiper/css'
 import 'swiper/css/autoplay'
 
 export default function Stage() {
+  // Will redirect any unauthenticated requests.
+  useGuard()
+
   const [images, setImages] = useState([])
 
   return (
@@ -28,7 +32,9 @@ export default function Stage() {
       >
         {images.map(image => (
           <SwiperSlide key={image.hash}>
-            <Item image={image} />
+            {({isActive}) => (
+              <Item image={image} shown={isActive} />
+            )}
           </SwiperSlide>
         ))}
       </Swiper>

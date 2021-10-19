@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function Item({ image }) {
+export function Item({ image, shown }) {
   const classes = useStyles()
 
   async function handleView({ hash }) {
@@ -22,8 +22,10 @@ export function Item({ image }) {
 
   useEffect(() => {
     // register image view
-    handleView(image)
-  }, [image])
+    if (shown) {
+      handleView(image)
+    }
+  }, [shown, image])
 
   return (
     <img
