@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import firebase from '../lib/firebaseApp'
 import { useUser } from '../context/userContext'
 import { Blank } from '../components/Layout'
-import { useImages } from '../data/useImages'
+import { useImages } from '../hooks/useImages'
 
 const useStyles = makeStyles({
   maskImage: {

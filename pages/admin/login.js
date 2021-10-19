@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { useUser } from '../../context/userContext'
-import { Blank } from '../../components/Layout'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -11,6 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import firebase from '../../lib/firebaseApp'
+import { Blank } from '../../components/Layout'
+import { useAuth } from '../../hooks/useGuard'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,18 +35,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles()
 
-  const { loadingUser, user } = useUser()
-  const router = useRouter()
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    if (!loadingUser && user) {
-      // Will redirect any authenticated requests.
-      router.push('/admin')
-    }
-  }, [router, loadingUser, user])
+  // Will redirect any authenticated requests.
+  useAuth('/admin')
 
   async function handleLogin() {
     try {

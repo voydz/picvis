@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
@@ -13,8 +12,9 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import firebase from '../../lib/firebaseApp'
 import { formatDate } from '../../lib/utils'
 import { Main } from '../../components/Layout'
-import { useUser } from '../../context/userContext'
-import { useImages } from '../../data/useImages'
+import { useTab } from '../../context/tabContext'
+import { useGuard } from '../../hooks/useGuard'
+import { useImages } from '../../hooks/useImages'
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -47,8 +47,6 @@ async function updateDocument(hash, data) {
 
 export default function Admin() {
   const classes = useStyles()
-  const router = useRouter()
-  const { loadingUser, user } = useUser()
   const { loadingImages, images } = useImages()
 
   async function handleAccept({ hash }) {
@@ -59,12 +57,8 @@ export default function Admin() {
     await updateDocument(hash, { approved: 0 })
   }
 
-  useEffect(() => {
-    if (!(user || loadingUser)) {
-      // Will redirect any unauthenticated requests.
-      router.push('/admin/login')
-    }
-  }, [router, loadingUser, user])
+  // Will redirect any unauthenticated requests.
+  useGuard()
 
   return (
     <Main dark title="Bilderverwaltung">
