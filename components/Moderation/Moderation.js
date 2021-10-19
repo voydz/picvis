@@ -73,7 +73,7 @@ export function Moderation() {
       ) : (
         <Grid container spacing={4}>
           {images.length === 0 ? (
-              <EmptyMessage tab={tab} />
+            <EmptyMessage tab={tab} />
           ) : (
             images.map(image => (
               <Item key={image.hash} image={image} />

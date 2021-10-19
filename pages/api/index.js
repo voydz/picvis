@@ -25,6 +25,7 @@ export default async function handler(req, res) {
           ext: value,
           timestamp: time,
           approved: -1,
+          views: 0,
         })
       } catch (err) {
         // Mostly just catching duplicates

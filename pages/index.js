@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import firebase from '../lib/firebaseApp'
 import { useUser } from '../context/userContext'
 import { Blank } from '../components/Layout'
-import { useImages } from '../hooks/useImages'
+import { useImages, viewImage, IMAGES_APPROVED } from '../hooks/useImages'
 
 const useStyles = makeStyles({
   maskImage: {
@@ -22,7 +22,7 @@ const masks = [
 
 export default function Stage() {
   const classes = useStyles()
-  const { images } = useImages()
+  const { images } = useImages(IMAGES_APPROVED)
 
   useEffect(() => {
     if (!images.length) {
@@ -48,6 +48,7 @@ export default function Stage() {
       function swapImage() {
         if (image >= images.length - 1) image = 0;
         else image++;
+        // viewImage(images[image].hash)
         gsap.set('.image', { attr: { 'xlink:href': images[image].ext } })
       }
 

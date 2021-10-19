@@ -5,13 +5,32 @@ export const IMAGES_APPROVED = 1
 export const IMAGES_DECLINED = 0
 export const IMAGES_PENDING = -1
 
-export function useImages(approved = IMAGES_PENDING) {
+export async function updateImage(hash, data) {
+  const db = firebase.firestore()
+
+  try {
+    await db.collection('images').doc(hash).update(data)
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function viewImage(hash) {
+  await updateImage(hash, {
+    views: firebase.firestore.FieldValue.increment(1),
+  });
+}
+
+export function useImages(approved) {
   const [images, setImages] = useState([])
   const [loadingImages, setLoadingImages] = useState(true) // Helpful, to update the UI accordingly.
 
   useEffect(() => {
     const db = firebase.firestore()
-    const q = db.collection('images').where('approved', '==', approved)
+    const q = db.collection('images')
+      .where('approved', '==', approved)
+      .orderBy('views', 'asc')
+
     const unsubscriber = q.onSnapshot((querySnapshot) => {
       try {
         const items = []
