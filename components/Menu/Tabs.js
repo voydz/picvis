@@ -8,7 +8,7 @@ export function Tabs({value, onChange}) {
       <MuiTabs value={value} onChange={onChange}>
         <MuiTab label="Ausstehend" />
         <MuiTab label="Angenommen" />
-        {/* <MuiTab label="Abgelehnt" /> */}
+        <MuiTab label="Papierkorb" />
       </MuiTabs>
     </Paper>
   );

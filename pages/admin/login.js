@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import firebase from '../../lib/firebaseApp'
-import { Blank } from '../../components/Layout'
 import { useAuth } from '../../hooks/useGuard'
+import { Blank } from '../../components/Layout'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
