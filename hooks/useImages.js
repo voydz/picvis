@@ -51,6 +51,7 @@ export function useImages(approved) {
     const db = firebase.firestore()
     const q = db.collection('images')
       .where('approved', '==', approved)
+      .orderBy('timestamp', 'asc')
 
     const unsubscriber = q.onSnapshot((querySnapshot) => {
       try {

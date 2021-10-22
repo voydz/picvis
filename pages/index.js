@@ -25,7 +25,7 @@ export default function Stage() {
           setImages(images)
         }}
         autoplay={{
-          delay: 20000,
+          delay: process.env.NEXT_PUBLIC_SLIDESHOW_DELAY,
           disableOnInteraction: false,
         }}
         loop
@@ -38,7 +38,7 @@ export default function Stage() {
           </SwiperSlide>
         ))}
       </Swiper>
-      <Banner />
+      <Banner duration={process.env.NEXT_PUBLIC_BANNER_DURATION} />
     </Blank>
   )
 }
