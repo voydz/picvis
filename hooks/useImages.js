@@ -39,6 +39,7 @@ export async function fetchImages(query = q => q) {
     return items
   } catch (err) {
     console.log(err);
+    return []
   }
 }
 

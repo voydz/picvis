@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Blank } from '../components/Layout'
-import { Item } from '../components/Stage/Item'
+import { Banner, Item } from '../components/Stage'
 import { useGuard } from '../hooks/useGuard'
 import { fetchImages } from '../hooks/useImages'
 
@@ -25,7 +25,7 @@ export default function Stage() {
           setImages(images)
         }}
         autoplay={{
-          delay: 10000,
+          delay: 20000,
           disableOnInteraction: false,
         }}
         loop
@@ -38,6 +38,7 @@ export default function Stage() {
           </SwiperSlide>
         ))}
       </Swiper>
+      <Banner />
     </Blank>
   )
 }
